@@ -4,25 +4,52 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Domain\Dto\Value\SportProvider\SportProviderResponseDto;
+use App\Models\Sport;
 use App\Repositories\Sport\ISportRepository;
+use App\Services\SportProvider\OddsApiService;
+use Illuminate\Database\Eloquent\Collection;
 
 final class SportService
 {
     private ISportRepository $sportRepository;
+    private OddsApiService $oddsApiService;
+
 
     public function __construct(
-        ISportRepository $sportRepository
+        ISportRepository $sportRepository,
+        OddsApiService $oddsApiService
     ) {
         $this->sportRepository = $sportRepository;
+        $this->oddsApiService = $oddsApiService;
     }
 
-    public function index()
+    public function index(): Collection
     {
-        return $this->sportRepository->all();
+        return $this->sportRepository->with("sportProvider")->all();
     }
 
-    public function createOrUpdate()
+    public function findOne(?string $uniqueId): ?SportProviderResponseDto
     {
-        // return $this->sportRepository->createOrUpdate
+        $sport = $this->sportRepository->find($uniqueId);
+        if (is_null($sport)) {
+            return null;
+        }
+        if (request()->query('type') === "upcoming") {
+            $response = $this->fetchInPlayMatches();
+        } else {
+            $response = $this->fetchNotInPlayMatches($sport);
+        }
+        return $response;
+    }
+
+    private function fetchInPlayMatches()
+    {
+        return $this->oddsApiService->fetchInPlayMatches();
+    }
+
+    private function fetchNotInPlayMatches(Sport $sport)
+    {
+        return $this->oddsApiService->fetchNotInPlayMatches($sport);
     }
 }

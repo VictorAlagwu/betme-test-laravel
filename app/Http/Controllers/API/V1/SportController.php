@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Domain\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Sport\SportsCollection;
 use App\Services\SportService;
@@ -24,5 +25,18 @@ class SportController extends Controller
             'status' => 'success',
             'message' => "List of sports",
         ])->response();
+    }
+
+    public function findOne(?string $uniqueId): JsonResponse
+    {
+        $response = $this->sportService->findOne($uniqueId);
+
+        if (!$response->status) {
+            return ApiResponse::responseError([], $response->message ?? "Unable to fetch upcoming matches");
+        }
+        return ApiResponse::responseSuccess(
+            $response->data,
+            $response->message
+        );
     }
 }

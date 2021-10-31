@@ -9,7 +9,7 @@ use App\Domain\Dto\Value\SportProvider\SportProviderResponseDto;
 
 interface ISportProvider
 {
-    public function fetchSports(
-        SportProviderDto $payload
-    ): ?SportProviderResponseDto;
+    // public function fetchSports(
+    //     SportProviderDto $payload
+    // ): ?SportProviderResponseDto;
 }

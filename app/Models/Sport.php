@@ -10,4 +10,11 @@ class Sport extends Model
 {
     use HasFactory;
     use UsesUuid;
+
+    protected $guarded = [];
+
+    public function sportProvider()
+    {
+        return $this->belongsTo(SportProvider::class, "provider_id");
+    }
 }

@@ -20,5 +20,6 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('sports')->group(function () {
         Route::get('/', [SportController::class, 'index']);
+        Route::get('/games/{id?}', [SportController::class, 'findOne']);
     });
 });
