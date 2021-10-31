@@ -1,14 +1,5 @@
 <template>
-    <div class="container"> 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse">
-                <div class="navbar-nav">
-                    <router-link to="/" class="nav-item nav-link">All Sports</router-link>
-                    <!-- <router-link to="/create" class="nav-item nav-link">Create Product</router-link> -->
-                </div>
-            </div>
-        </nav>
-
+    <div class="bg-light p-4"> 
         <router-view> </router-view>
     </div>
 </template>

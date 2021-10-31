@@ -31,9 +31,8 @@ final class SportService
 
     public function findOne(?string $uniqueId): ?SportProviderResponseDto
     {
-        $sport = $this->sportRepository->find($uniqueId);
-        if (is_null($sport)) {
-            return null;
+        if ($uniqueId) {
+            $sport = $this->sportRepository->find($uniqueId);
         }
         if (request()->query('type') === "upcoming") {
             $response = $this->fetchInPlayMatches();

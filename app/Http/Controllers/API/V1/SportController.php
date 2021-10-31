@@ -27,7 +27,7 @@ class SportController extends Controller
         ])->response();
     }
 
-    public function findOne(?string $uniqueId): JsonResponse
+    public function findOne(?string $uniqueId = null): JsonResponse
     {
         $response = $this->sportService->findOne($uniqueId);
 

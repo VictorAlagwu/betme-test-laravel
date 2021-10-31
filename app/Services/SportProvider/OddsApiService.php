@@ -113,13 +113,14 @@ final class OddsApiService implements ISportProvider
     public function fetchNotInPlayMatches(Sport $sport): ?OddsApiResponseDto
     {
         try {
+            $redis = Redis::connection();
             $meta = json_decode($sport->meta, true);
-            $key = "odds-api-not-inplay-sports:uk:h2h:" . $meta->key;
+            $key = "odds-api-not-inplay-sports:uk:h2h:" . $meta['key'];
             $url = $this->apiUrl . 'odds/?apiKey=' . $this->apiKey;
-            $url .= '&sport=' . $meta->key . '&region=uk&mkt=h2h';
+            $url .= '&sport=' . $meta['key'] . '&region=uk&mkt=h2h';
 
             //Get from cache First
-            $notInPlaySports = Redis::get($key);
+            $notInPlaySports = $redis->get($key);
             if (!empty($notInPlaySports)) {
                 return new OddsApiResponseDto(
                     true,
@@ -146,7 +147,8 @@ final class OddsApiService implements ISportProvider
                     []
                 );
             }
-            Redis::set($key, json_encode($data), now()->addMinutes(60));
+            // , now()->addMinutes(60)
+            $redis->set($key, json_encode($data));
             return new OddsApiResponseDto(true, "All Sports fetched successfully", $data);
         } catch (\Throwable $exception) {
             report($exception);
