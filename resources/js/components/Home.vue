@@ -255,7 +255,7 @@
                                 <td>{{ game.sport_nice }}</td>
                                 <td>{{ game.home_team }}</td>
                                 <td>
-                                    {{ new Date(game.commence_time * 1000) }}
+                                    {{ new Date(game.commence_time * 1000).toLocaleTimeString("en-GB") }}
                                 </td>
                                 <td>
                                     <ul>
