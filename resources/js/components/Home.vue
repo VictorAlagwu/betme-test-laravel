@@ -340,7 +340,7 @@ export default {
     methods: {
         async handleFetchSports() {
             try {
-                let url = `${window.location.href}/api/v1/sports`;
+                let url = `${window.location.href}api/v1/sports`;
                 let response = await this.axios.get(url);
                 if (response.data?.data) {
                     let sports = response.data?.data.map((sport) => {

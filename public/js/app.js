@@ -19549,7 +19549,7 @@ var Pusher = window.Pusher;
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                url = "".concat(window.location.href, "/api/v1/sports");
+                url = "".concat(window.location.href, "api/v1/sports");
                 _context.next = 4;
                 return _this.axios.get(url);
 
