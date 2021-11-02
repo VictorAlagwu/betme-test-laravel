@@ -12,17 +12,7 @@
                     w-65
                 "
             >
-                <div
-                    class="
-                       
-                        top-10
-                        left-0
-                        w-70
-                        bg-white
-                        h-full
-                        border-r
-                    "
-                >
+                <div class="top-10 left-0 w-70 bg-white h-full border-r">
                     <div
                         class="flex items-center justify-center h-auto border-b"
                     >
@@ -105,7 +95,9 @@
             </aside>
         </div>
         <div class="flex flex-col flex-1 flex-grow content-start w-11/12 p-2">
-            <main class="flex w-full min-h-screen font-sans flex-col flex-1 m-3">
+            <main
+                class="flex w-full min-h-screen font-sans flex-col flex-1 m-3"
+            >
                 <section v-if="currentView !== 'upcoming'">
                     <h3 class="font-bold p-2">
                         Live Games for {{ selectedSport.name }}
@@ -186,7 +178,14 @@
                                             <span> {{ site.site_nice }} </span>
                                             <span class="flex flex-row">
                                                 <div
-                                                    class="p-2 border-green-500 text-white rounded-md bg-green-600 hover:bg-green-700"
+                                                    class="
+                                                        p-2
+                                                        border-green-500
+                                                        text-white
+                                                        rounded-md
+                                                        bg-green-600
+                                                        hover:bg-green-700
+                                                    "
                                                     v-for="(odd, idx) in site
                                                         .odds.h2h"
                                                     :key="idx"
@@ -255,7 +254,11 @@
                                 <td>{{ game.sport_nice }}</td>
                                 <td>{{ game.home_team }}</td>
                                 <td>
-                                    {{ new Date(game.commence_time * 1000).toLocaleTimeString("en-GB") }}
+                                    <span v-if="game.commence_time">{{
+                                        new Date(
+                                            game.commence_time * 1000
+                                        ).toLocaleTimeString("en-GB")
+                                    }}</span>
                                 </td>
                                 <td>
                                     <ul>
@@ -279,7 +282,14 @@
                                             <span> {{ site.site_nice }} </span>
                                             <span class="flex flex-row">
                                                 <div
-                                                    class="p-2 border-green-500 text-white rounded-md bg-green-600 hover:bg-green-700"
+                                                    class="
+                                                        p-2
+                                                        border-green-500
+                                                        text-white
+                                                        rounded-md
+                                                        bg-green-600
+                                                        hover:bg-green-700
+                                                    "
                                                     v-for="(odd, idx) in site
                                                         .odds.h2h"
                                                     :key="idx"
@@ -302,6 +312,8 @@
 <script>
 import { groupBy } from "lodash";
 
+const Pusher = window.Pusher;
+
 export default {
     name: "Home",
     data() {
@@ -321,6 +333,9 @@ export default {
     created() {
         this.handleFetchSports();
         this.handleFetchUpcomingGame();
+    },
+    mounted() {
+        this.subscribePusherNotification();
     },
     methods: {
         async handleFetchSports() {
@@ -372,6 +387,17 @@ export default {
             } catch (error) {
                 this.currentView = "upcoming";
             }
+        },
+        subscribePusherNotification() {
+            let $vm = this;
+            window.Echo.channel("upcoming-matches").listen(
+                "FetchUpcomingGamesOdd",
+                function (data) {
+                    console.log("Updating fetching odds", data);
+                    $vm.upcomingGames = data;
+                    console.log("Odds updated");
+                }
+            );
         },
     },
 };

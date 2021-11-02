@@ -29,22 +29,22 @@ final class SportService
         return $this->sportRepository->with("sportProvider")->all();
     }
 
-    public function findOne(?string $uniqueId): ?SportProviderResponseDto
+    public function findOne(?string $uniqueId, ?string $queryType = "upcoming", bool $clearCache = false): ?SportProviderResponseDto
     {
         if ($uniqueId) {
             $sport = $this->sportRepository->find($uniqueId);
         }
-        if (request()->query('type') === "upcoming") {
-            $response = $this->fetchInPlayMatches();
+        if ($queryType === "upcoming") {
+            $response = $this->fetchInPlayMatches($clearCache);
         } else {
             $response = $this->fetchNotInPlayMatches($sport);
         }
         return $response;
     }
 
-    private function fetchInPlayMatches()
+    private function fetchInPlayMatches(bool $clearCache)
     {
-        return $this->oddsApiService->fetchInPlayMatches();
+        return $this->oddsApiService->fetchInPlayMatches($clearCache);
     }
 
     private function fetchNotInPlayMatches(Sport $sport)

@@ -29,7 +29,7 @@ class SportController extends Controller
 
     public function findOne(?string $uniqueId = null): JsonResponse
     {
-        $response = $this->sportService->findOne($uniqueId);
+        $response = $this->sportService->findOne($uniqueId, request()->query('type'), false);
 
         if (!$response->status) {
             return ApiResponse::responseError([], $response->message ?? "Unable to fetch upcoming matches");

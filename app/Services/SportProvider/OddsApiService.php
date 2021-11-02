@@ -59,7 +59,7 @@ final class OddsApiService implements ISportProvider
         }
     }
 
-    public function fetchInPlayMatches(): ?OddsApiResponseDto
+    public function fetchInPlayMatches(bool $clearCache = false): ?OddsApiResponseDto
     {
         try {
             $redis = Redis::connection();
@@ -69,7 +69,7 @@ final class OddsApiService implements ISportProvider
             $key = "odds-api-upcoming-sports:uk:h2h";
             //Get from cache First
             $upcomingSports = $redis->get($key);
-            if (!empty($upcomingSports)) {
+            if (!empty($upcomingSports) && $clearCache) {
                 return new OddsApiResponseDto(
                     true,
                     "All upcoming sports fetched successfully",
