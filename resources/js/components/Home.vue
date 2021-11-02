@@ -358,7 +358,7 @@ export default {
         async handleFetchUpcomingGame() {
             try {
                 let url =
-                    "http://127.0.0.1:8000/api/v1/sports/games?type=upcoming";
+                   `${window.location.href}api/v1/sports/games?type=upcoming`;
                 let response = await this.axios.get(url);
                 if (response.data?.data) {
                     this.upcomingGames = response.data?.data;
@@ -369,7 +369,7 @@ export default {
         },
         async handleFetchSelectedSportGames(id) {
             try {
-                let url = `http://127.0.0.1:8000/api/v1/sports/games/${id}`;
+                let url = `${window.location.href}api/v1/sports/games/${id}`;
                 let response = await this.axios.get(url);
                 if (response.data?.data) {
                     this.currentSportGames = response.data?.data;
@@ -394,7 +394,7 @@ export default {
                 "FetchUpcomingGamesOdd",
                 function (data) {
                     console.log("Updating fetching odds", data);
-                    $vm.upcomingGames = data;
+                    $vm.upcomingGames = data?.data;
                     console.log("Odds updated");
                 }
             );

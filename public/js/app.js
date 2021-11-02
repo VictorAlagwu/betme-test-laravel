@@ -19593,7 +19593,7 @@ var Pusher = window.Pusher;
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.prev = 0;
-                url = "http://127.0.0.1:8000/api/v1/sports/games?type=upcoming";
+                url = "".concat(window.location.href, "api/v1/sports/games?type=upcoming");
                 _context2.next = 4;
                 return _this2.axios.get(url);
 
@@ -19631,7 +19631,7 @@ var Pusher = window.Pusher;
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.prev = 0;
-                url = "http://127.0.0.1:8000/api/v1/sports/games/".concat(id);
+                url = "".concat(window.location.href, "api/v1/sports/games/").concat(id);
                 _context3.next = 4;
                 return _this3.axios.get(url);
 
@@ -19691,7 +19691,7 @@ var Pusher = window.Pusher;
       var $vm = this;
       window.Echo.channel("upcoming-matches").listen("FetchUpcomingGamesOdd", function (data) {
         console.log("Updating fetching odds", data);
-        $vm.upcomingGames = data;
+        $vm.upcomingGames = data === null || data === void 0 ? void 0 : data.data;
         console.log("Odds updated");
       });
     }
